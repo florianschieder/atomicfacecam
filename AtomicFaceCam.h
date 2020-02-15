@@ -23,7 +23,7 @@ struct AtomicFaceCamApp
 
     int desktopWidth = 0;
     int desktopHeight = 0;
-    int standardPosition = 7;
+
     int arrowStep = 10;
 };
 
@@ -31,6 +31,13 @@ namespace AtomicFaceCam
 {
     ATOM MyRegisterClass();
     BOOL InitInstance(int);
+    void LoadConfiguration();
+    void SaveConfiguration();
+
     int Main();
-    LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+    LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
+
+    INT_PTR CALLBACK HelpDlgProc(HWND, UINT, WPARAM, LPARAM);
+    INT_PTR CALLBACK AboutDlgProc(HWND, UINT, WPARAM, LPARAM);
+    INT_PTR CALLBACK ConfigurationDlgProc(HWND, UINT, WPARAM, LPARAM);
 }

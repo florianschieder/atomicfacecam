@@ -45,10 +45,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
+    <Image Include="res\about.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
-    <Image Include="AtomicFaceCam.ico">
+    <Image Include="res\AtomicFaceCam.ico">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="res\help.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>

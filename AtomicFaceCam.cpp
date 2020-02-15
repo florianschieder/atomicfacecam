@@ -8,6 +8,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    INITCOMMONCONTROLSEX icc;
+    icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
+    icc.dwICC = ICC_STANDARD_CLASSES | ICC_WIN95_CLASSES;
+
+    InitCommonControlsEx(&icc);
+
     application.hInstance = hInstance;
     application.nCmdShow = nCmdShow;
 
@@ -22,8 +28,87 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return AtomicFaceCam::Main();
 }
 
+void AtomicFaceCam::LoadConfiguration()
+{
+    DWORD bufferSize = 4;
+
+    RegGetValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraArrowKeyStep",
+        RRF_RT_DWORD,
+        NULL,
+        (PVOID) &application.arrowStep,
+        &bufferSize);
+
+    RegGetValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraHeight",
+        RRF_RT_DWORD,
+        NULL,
+        (PVOID)&application.hMainWndHeight,
+        &bufferSize);
+
+    RegGetValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraWidth",
+        RRF_RT_DWORD,
+        NULL,
+        (PVOID)&application.hMainWndWidth,
+        &bufferSize);
+
+    RegGetValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraFPSRate",
+        RRF_RT_DWORD,
+        NULL,
+        (PVOID)&application.fpsRate,
+        &bufferSize);
+}
+
+void AtomicFaceCam::SaveConfiguration()
+{
+    DWORD bufferSize = 4;
+
+    RegSetKeyValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraArrowKeyStep",
+        REG_DWORD,
+        (LPVOID) &application.arrowStep,
+        bufferSize);
+
+    RegSetKeyValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraWidth",
+        REG_DWORD,
+        (LPVOID) &application.hMainWndWidth,
+        bufferSize);
+
+    RegSetKeyValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraHeight",
+        REG_DWORD,
+        (LPVOID) &application.hMainWndHeight,
+        bufferSize);
+
+    RegSetKeyValue(
+        HKEY_CURRENT_USER,
+        L"SOFTWARE\\AtomicFaceCam\\",
+        L"CameraFPSRate",
+        REG_DWORD,
+        (LPVOID) &application.fpsRate,
+        bufferSize);
+}
+
 int AtomicFaceCam::Main()
 {
+    LoadConfiguration();
     MyRegisterClass();
 
     if (!InitInstance(application.nCmdShow))
@@ -60,7 +145,7 @@ ATOM AtomicFaceCam::MyRegisterClass()
     wcex.cbSize = sizeof(WNDCLASSEX);
     
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;
+    wcex.lpfnWndProc = MainWndProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = application.hInstance;
@@ -112,7 +197,7 @@ BOOL AtomicFaceCam::InitInstance(int nCmdShow)
     return TRUE;
 }
 
-LRESULT CALLBACK AtomicFaceCam::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
@@ -286,6 +371,30 @@ LRESULT CALLBACK AtomicFaceCam::WndProc(HWND hWnd, UINT message, WPARAM wParam, 
                             SWP_SHOWWINDOW);
                     }
                     break;
+
+                case VK_F1:
+                    DialogBox(
+                        application.hInstance,
+                        MAKEINTRESOURCE(IDD_HELP),
+                        hWnd,
+                        HelpDlgProc);
+                    break;
+
+                case VK_F2:
+                    DialogBox(
+                        application.hInstance,
+                        MAKEINTRESOURCE(IDD_CONFIGURATION),
+                        hWnd,
+                        ConfigurationDlgProc);
+                    break;
+
+                case VK_F3:
+                    DialogBox(
+                        application.hInstance,
+                        MAKEINTRESOURCE(IDD_ABOUT),
+                        hWnd,
+                        AboutDlgProc);
+                    break;
             }
             break;
 
@@ -349,4 +458,113 @@ LRESULT CALLBACK AtomicFaceCam::WndProc(HWND hWnd, UINT message, WPARAM wParam, 
             break;
     }
     return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+INT_PTR CALLBACK AtomicFaceCam::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+{
+    switch (Message)
+    {
+    case WM_INITDIALOG:
+        return TRUE;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            EndDialog(hwnd, IDOK);
+            break;
+        case IDCANCEL:
+            EndDialog(hwnd, IDCANCEL);
+            break;
+        }
+        break;
+    default:
+        return FALSE;
+    }
+    return TRUE;
+}
+
+INT_PTR CALLBACK AtomicFaceCam::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+{
+    switch (Message)
+    {
+    case WM_INITDIALOG:
+
+        return TRUE;
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            EndDialog(hwnd, IDOK);
+            break;
+        case IDCANCEL:
+            EndDialog(hwnd, IDCANCEL);
+            break;
+        }
+        break;
+    default:
+        return FALSE;
+    }
+    return TRUE;
+}
+
+INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+{
+    switch (Message)
+    {
+    case WM_INITDIALOG:
+        CheckDlgButton(
+            hwnd,
+            IDC_RADIO320240,
+            (application.hMainWndWidth == 320 && application.hMainWndHeight == 240));
+
+        CheckDlgButton(
+            hwnd,
+            IDC_RADIO640480,
+            (application.hMainWndWidth == 640 && application.hMainWndHeight == 480));
+
+        SetDlgItemInt(
+            hwnd,
+            IDC_ARROWSTEP,
+            application.arrowStep,
+            TRUE);
+
+        SetDlgItemInt(
+            hwnd,
+            IDC_FPS,
+            application.fpsRate,
+            TRUE);
+
+        return TRUE;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            if (IsDlgButtonChecked(hwnd, IDC_RADIO320240))
+            {
+                application.hMainWndWidth = 320;
+                application.hMainWndHeight = 240;
+            } else if (IsDlgButtonChecked(hwnd, IDC_RADIO640480))
+            {
+                application.hMainWndWidth = 640;
+                application.hMainWndHeight = 480;
+            }
+
+            application.arrowStep = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
+            application.fpsRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
+
+            SaveConfiguration();
+
+            EndDialog(hwnd, IDOK);
+            break;
+        case IDCANCEL:
+            EndDialog(hwnd, IDCANCEL);
+            break;
+        }
+        break;
+    default:
+        return FALSE;
+    }
+    return TRUE;
 }
