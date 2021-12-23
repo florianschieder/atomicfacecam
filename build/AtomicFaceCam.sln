@@ -9,8 +9,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Portable|x64 = Portable|x64
-		Portable|x86 = Portable|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
@@ -19,10 +17,6 @@ Global
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Debug|x64.Build.0 = Debug|x64
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Debug|x86.ActiveCfg = Debug|Win32
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Debug|x86.Build.0 = Debug|Win32
-		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Portable|x64.ActiveCfg = Portable|x64
-		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Portable|x64.Build.0 = Portable|x64
-		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Portable|x86.ActiveCfg = Portable|Win32
-		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Portable|x86.Build.0 = Portable|Win32
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Release|x64.ActiveCfg = Release|x64
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Release|x64.Build.0 = Release|x64
 		{F31F509B-F4BE-4BF0-9C08-5F8A090FFE0A}.Release|x86.ActiveCfg = Release|Win32
