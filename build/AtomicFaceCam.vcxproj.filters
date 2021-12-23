@@ -24,11 +24,11 @@
     <ClInclude Include="..\src\pch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\resources\resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\targetver.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\resources\resource.h">
+      <Filter>Ressourcendateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
