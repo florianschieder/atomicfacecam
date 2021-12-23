@@ -1,9 +1,23 @@
 #pragma once
 
 #include "resource.h"
-#include "framework.h"
+#include "pch.h"
+#include "Hibernation.h"
 
-struct AtomicFaceCamApp
+struct Resolution
+{
+    unsigned short int width;
+    unsigned short int height;
+};
+
+struct AFCConfig
+{
+    Resolution resolution;
+    unsigned char fpsRate;          // 0 <= fpsRate <= 255
+    unsigned short int moveAmount;  // 0 <= moveAmount <= 65535
+};
+
+struct AFCApp
 {
     HINSTANCE hInstance = NULL;
     int nCmdShow = SW_SHOW;
@@ -17,14 +31,10 @@ struct AtomicFaceCamApp
     LPCTSTR szMainWindowClass = L"";
     LPCTSTR szCameraClass = L"";
 
-    int hMainWndWidth = 320;
-    int hMainWndHeight = 240;
-    int fpsRate = 20;
+    AFCConfig config;
 
     int desktopWidth = 0;
     int desktopHeight = 0;
-
-    int arrowStep = 10;
 };
 
 namespace AtomicFaceCam

@@ -206,7 +206,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\src\AtomicFaceCam.h" />
-    <ClInclude Include="..\src\framework.h" />
+    <ClInclude Include="..\src\Hibernation.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\resources\resource.h" />
     <ClInclude Include="..\src\targetver.h" />

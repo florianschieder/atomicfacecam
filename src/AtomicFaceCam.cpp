@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AtomicFaceCam.h"
 
-AtomicFaceCamApp application;
+AFCApp application;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance,
@@ -32,80 +32,32 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 void AtomicFaceCam::LoadConfiguration()
 {
-    DWORD bufferSize = 4;
-
-    RegGetValue(
+    RegistryValueHibernation<DWORD> hibernation(
         HKEY_CURRENT_USER,
         L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraArrowKeyStep",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID) &application.arrowStep,
-        &bufferSize);
+        REG_DWORD, RRF_RT_DWORD, 4);
 
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraHeight",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.hMainWndHeight,
-        &bufferSize);
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraWidth",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.hMainWndWidth,
-        &bufferSize);
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraFPSRate",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.fpsRate,
-        &bufferSize);
+    application.config.moveAmount =
+        (unsigned short) hibernation.load(L"CameraArrowKeyStep");
+    application.config.resolution.height =
+        (unsigned short) hibernation.load(L"CameraHeight");
+    application.config.resolution.width =
+        (unsigned short) hibernation.load(L"CameraWidth");
+    application.config.fpsRate =
+        (unsigned char) hibernation.load(L"CameraFPSRate");
 }
 
 void AtomicFaceCam::SaveConfiguration()
 {
-    DWORD bufferSize = 4;
-
-    RegSetKeyValue(
+    RegistryValueHibernation<DWORD> hibernation(
         HKEY_CURRENT_USER,
         L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraArrowKeyStep",
-        REG_DWORD,
-        (LPVOID) &application.arrowStep,
-        bufferSize);
+        REG_DWORD, RRF_RT_DWORD, 4);
 
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraWidth",
-        REG_DWORD,
-        (LPVOID) &application.hMainWndWidth,
-        bufferSize);
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraHeight",
-        REG_DWORD,
-        (LPVOID) &application.hMainWndHeight,
-        bufferSize);
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraFPSRate",
-        REG_DWORD,
-        (LPVOID) &application.fpsRate,
-        bufferSize);
+    hibernation.store(L"CameraArrowKeyStep", application.config.moveAmount);
+    hibernation.store(L"CameraHeight", application.config.resolution.height);
+    hibernation.store(L"CameraWidth", application.config.resolution.width);
+    hibernation.store(L"CameraFPSRate", application.config.fpsRate);
 }
 
 int AtomicFaceCam::Main()
@@ -178,8 +130,8 @@ BOOL AtomicFaceCam::InitInstance(int nCmdShow)
         WS_POPUP | WS_VISIBLE | WS_SYSMENU,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        application.hMainWndWidth,
-        application.hMainWndHeight,
+        application.config.resolution.width,
+        application.config.resolution.height,
         NULL,
         NULL,
         application.hInstance,
@@ -215,9 +167,9 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                         hWnd,
                         HWND_TOPMOST,
                         0,
-                        application.desktopHeight - application.hMainWndHeight,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.desktopHeight - application.config.resolution.height,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -225,10 +177,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application.desktopWidth - application.hMainWndWidth) / 2,
-                        application.desktopHeight - application.hMainWndHeight,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        (application.desktopWidth - application.config.resolution.width) / 2,
+                        application.desktopHeight - application.config.resolution.height,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -236,10 +188,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application.desktopWidth - application.hMainWndWidth,
-                        application.desktopHeight - application.hMainWndHeight,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.desktopWidth - application.config.resolution.width,
+                        application.desktopHeight - application.config.resolution.height,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -248,9 +200,9 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                         hWnd,
                         HWND_TOPMOST,
                         0,
-                        (application.desktopHeight - application.hMainWndHeight) / 2,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        (application.desktopHeight - application.config.resolution.height) / 2,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -258,10 +210,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application.desktopWidth - application.hMainWndWidth) / 2,
-                        (application.desktopHeight - application.hMainWndHeight) / 2,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        (application.desktopWidth - application.config.resolution.width) / 2,
+                        (application.desktopHeight - application.config.resolution.height) / 2,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -269,10 +221,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application.desktopWidth - application.hMainWndWidth,
-                        (application.desktopHeight - application.hMainWndHeight) / 2,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.desktopWidth - application.config.resolution.width,
+                        (application.desktopHeight - application.config.resolution.height) / 2,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -282,8 +234,8 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                         HWND_TOPMOST,
                         0,
                         0,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -291,10 +243,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application.desktopWidth - application.hMainWndWidth) / 2,
+                        (application.desktopWidth - application.config.resolution.width) / 2,
                         0,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -302,10 +254,10 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application.desktopWidth - application.hMainWndWidth,
+                        application.desktopWidth - application.config.resolution.width,
                         0,
-                        application.hMainWndWidth,
-                        application.hMainWndHeight,
+                        application.config.resolution.width,
+                        application.config.resolution.height,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -313,14 +265,14 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.top -= application.arrowStep;
+                        rect.top -= application.config.moveAmount;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application.hMainWndWidth,
-                            application.hMainWndHeight,
+                            application.config.resolution.width,
+                            application.config.resolution.height,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -329,15 +281,15 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.top += application.arrowStep;
+                        rect.top += application.config.moveAmount;
 
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application.hMainWndWidth,
-                            application.hMainWndHeight,
+                            application.config.resolution.width,
+                            application.config.resolution.height,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -346,14 +298,14 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.left -= application.arrowStep;
+                        rect.left -= application.config.moveAmount;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application.hMainWndWidth,
-                            application.hMainWndHeight,
+                            application.config.resolution.width,
+                            application.config.resolution.height,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -362,14 +314,14 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.left += application.arrowStep;
+                        rect.left += application.config.moveAmount;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application.hMainWndWidth,
-                            application.hMainWndHeight,
+                            application.config.resolution.width,
+                            application.config.resolution.height,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -406,8 +358,8 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                 WS_VISIBLE + WS_CHILD,
                 0,
                 0,
-                application.hMainWndWidth,
-                application.hMainWndHeight,
+                application.config.resolution.width,
+                application.config.resolution.height,
                 hWnd,
                 0);
 
@@ -426,7 +378,7 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
             SendMessage(
                 application.hWebCam,
                 WM_CAP_SET_PREVIEWRATE,
-                1000 / application.fpsRate,
+                1000 / application.config.fpsRate,
                 0);
 
             SendMessage(
@@ -440,8 +392,8 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
                 HWND_TOPMOST,
                 0,
                 0,
-                application.hMainWndWidth,
-                application.hMainWndHeight,
+                application.config.resolution.width,
+                application.config.resolution.height,
                 SWP_SHOWWINDOW);
 
             break;
@@ -524,23 +476,23 @@ INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WP
         CheckDlgButton(
             hwnd,
             IDC_RADIO320240,
-            (application.hMainWndWidth == 320 && application.hMainWndHeight == 240));
+            (application.config.resolution.width == 320 && application.config.resolution.height == 240));
 
         CheckDlgButton(
             hwnd,
             IDC_RADIO640480,
-            (application.hMainWndWidth == 640 && application.hMainWndHeight == 480));
+            (application.config.resolution.width == 640 && application.config.resolution.height == 480));
 
         SetDlgItemInt(
             hwnd,
             IDC_ARROWSTEP,
-            application.arrowStep,
+            application.config.moveAmount,
             TRUE);
 
         SetDlgItemInt(
             hwnd,
             IDC_FPS,
-            application.fpsRate,
+            application.config.fpsRate,
             TRUE);
 
         return TRUE;
@@ -551,16 +503,20 @@ INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WP
         case IDOK:
             if (IsDlgButtonChecked(hwnd, IDC_RADIO320240))
             {
-                application.hMainWndWidth = 320;
-                application.hMainWndHeight = 240;
+                application.config.resolution.width = 320;
+                application.config.resolution.height = 240;
             } else if (IsDlgButtonChecked(hwnd, IDC_RADIO640480))
             {
-                application.hMainWndWidth = 640;
-                application.hMainWndHeight = 480;
+                application.config.resolution.width = 640;
+                application.config.resolution.height = 480;
             }
 
-            application.arrowStep = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
-            application.fpsRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
+            application.config.moveAmount =
+                (unsigned short) GetDlgItemInt(
+                    hwnd, IDC_ARROWSTEP, NULL, TRUE);
+
+            application.config.fpsRate =
+                (unsigned char) GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
 
             SaveConfiguration();
 
