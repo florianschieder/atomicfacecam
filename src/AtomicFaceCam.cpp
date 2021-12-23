@@ -4,10 +4,12 @@
 AtomicFaceCamApp application;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+                      _In_opt_ HINSTANCE hPrevInstance,
+                      _In_ LPWSTR    lpCmdLine,
+                      _In_ int       nCmdShow)
 {
+    UNREFERENCED_PARAMETER(hPrevInstance);
+
     INITCOMMONCONTROLSEX icc;
     icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
     icc.dwICC = ICC_STANDARD_CLASSES | ICC_WIN95_CLASSES;
@@ -462,6 +464,8 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
 
 INT_PTR CALLBACK AtomicFaceCam::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER(lParam);
+
     switch (Message)
     {
     case WM_INITDIALOG:
@@ -486,6 +490,8 @@ INT_PTR CALLBACK AtomicFaceCam::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wPa
 
 INT_PTR CALLBACK AtomicFaceCam::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER(lParam);
+
     switch (Message)
     {
     case WM_INITDIALOG:
@@ -510,6 +516,8 @@ INT_PTR CALLBACK AtomicFaceCam::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wPar
 
 INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
+    UNREFERENCED_PARAMETER(lParam);
+
     switch (Message)
     {
     case WM_INITDIALOG:
