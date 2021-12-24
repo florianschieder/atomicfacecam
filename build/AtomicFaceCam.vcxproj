@@ -205,14 +205,31 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\app\config\Config.h" />
+    <ClInclude Include="..\src\app\config\Hibernation.h" />
+    <ClInclude Include="..\src\app\ui\AboutDialog.h" />
+    <ClInclude Include="..\src\app\ui\CameraWindow.h" />
+    <ClInclude Include="..\src\app\ui\ConfigurationDialog.h" />
+    <ClInclude Include="..\src\app\ui\HelpDialog.h" />
     <ClInclude Include="..\src\AtomicFaceCam.h" />
-    <ClInclude Include="..\src\Hibernation.h" />
+    <ClInclude Include="..\src\factory\Registry.h" />
+    <ClInclude Include="..\src\hibernation\Hibernations.h" />
+    <ClInclude Include="..\src\hibernation\IdentifiableObjectHibernation.h" />
+    <ClInclude Include="..\src\hibernation\RegistryValueHibernation.h" />
+    <ClInclude Include="..\src\hibernation\SingleObjectHibernation.h" />
     <ClInclude Include="..\src\pch.h" />
     <ClInclude Include="..\resources\resource.h" />
     <ClInclude Include="..\src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\app\config\Hibernation.cpp" />
+    <ClCompile Include="..\src\app\ui\AboutDialog.cpp" />
+    <ClCompile Include="..\src\app\ui\CameraWindow.cpp" />
+    <ClCompile Include="..\src\app\ui\ConfigurationDialog.cpp" />
+    <ClCompile Include="..\src\app\ui\HelpDialog.cpp" />
     <ClCompile Include="..\src\AtomicFaceCam.cpp" />
+    <ClCompile Include="..\src\factory\Registry.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -2,20 +2,9 @@
 
 #include "resource.h"
 #include "pch.h"
-#include "Hibernation.h"
 
-struct Resolution
-{
-    unsigned short int width;
-    unsigned short int height;
-};
-
-struct AFCConfig
-{
-    Resolution resolution;
-    unsigned char fpsRate;          // 0 <= fpsRate <= 255
-    unsigned short int moveAmount;  // 0 <= moveAmount <= 65535
-};
+#include "App/Config/Config.h"
+#include "App/Config/Hibernation.h"
 
 struct AFCApp
 {
@@ -31,7 +20,7 @@ struct AFCApp
     LPCTSTR szMainWindowClass = L"";
     LPCTSTR szCameraClass = L"";
 
-    AFCConfig config;
+    Config config;
 
     int desktopWidth = 0;
     int desktopHeight = 0;
@@ -39,6 +28,8 @@ struct AFCApp
 
 namespace AtomicFaceCam
 {
+    AFCApp application;
+
     ATOM MyRegisterClass();
     BOOL InitInstance(int);
 

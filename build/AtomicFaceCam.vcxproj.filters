@@ -1,58 +1,118 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Quelldateien">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{7689aef6-0094-4238-80d0-bd6b18dae586}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Resources\Icons">
+      <UniqueIdentifier>{7d84db12-9653-4847-bef4-24d8cd58bb8f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Ressourcendateien">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="App">
+      <UniqueIdentifier>{2661e479-b2f8-43a2-a5db-1fef03c07f0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Config">
+      <UniqueIdentifier>{7137df31-22a5-4984-bee6-7d0a9e477a07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\UI">
+      <UniqueIdentifier>{0849c1ba-5dc2-4b62-88ba-9648d464a99b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factory">
+      <UniqueIdentifier>{918fd4fa-ff54-4ed9-961c-57ef83619a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hibernation">
+      <UniqueIdentifier>{20b4aa61-d7f0-456e-86c4-55d25d421ef8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\resources\resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\config\Config.h">
+      <Filter>App\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\config\Hibernation.h">
+      <Filter>App\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\ui\AboutDialog.h">
+      <Filter>App\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\ui\CameraWindow.h">
+      <Filter>App\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\ui\ConfigurationDialog.h">
+      <Filter>App\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\app\ui\HelpDialog.h">
+      <Filter>App\UI</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\AtomicFaceCam.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>App</Filter>
     </ClInclude>
     <ClInclude Include="..\src\pch.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>App</Filter>
     </ClInclude>
     <ClInclude Include="..\src\targetver.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="..\resources\resource.h">
-      <Filter>Ressourcendateien</Filter>
+    <ClInclude Include="..\src\factory\Registry.h">
+      <Filter>Factory</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Hibernation.h">
-      <Filter>Headerdateien</Filter>
+    <ClInclude Include="..\src\hibernation\IdentifiableObjectHibernation.h">
+      <Filter>Hibernation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hibernation\SingleObjectHibernation.h">
+      <Filter>Hibernation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hibernation\RegistryValueHibernation.h">
+      <Filter>Hibernation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hibernation\Hibernations.h">
+      <Filter>Hibernation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\app\config\Hibernation.cpp">
+      <Filter>App\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\ui\AboutDialog.cpp">
+      <Filter>App\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\ui\CameraWindow.cpp">
+      <Filter>App\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\ui\ConfigurationDialog.cpp">
+      <Filter>App\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app\ui\HelpDialog.cpp">
+      <Filter>App\UI</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\AtomicFaceCam.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>App</Filter>
     </ClCompile>
     <ClCompile Include="..\src\pch.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>App</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\resources\AtomicFaceCam.rc">
-      <Filter>Ressourcendateien</Filter>
-    </ResourceCompile>
+    <ClCompile Include="..\src\factory\Registry.cpp">
+      <Filter>Factory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\about.ico">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Resources\Icons</Filter>
     </Image>
     <Image Include="..\resources\AtomicFaceCam.ico">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Resources\Icons</Filter>
     </Image>
     <Image Include="..\resources\help.ico">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Resources\Icons</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\resources\AtomicFaceCam.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
