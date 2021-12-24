@@ -3,6 +3,53 @@
 
 AFCApp application;
 
+// TODO beautify
+class ConfigHibernation
+    : public SingleObjectHibernation<AFCConfig>
+{
+    public:
+        ConfigHibernation()
+        {
+            this->dwordHibernation =
+                std::make_unique<RegistryValueHibernation<DWORD>>(
+                    HKEY_CURRENT_USER,
+                    L"SOFTWARE\\AtomicFaceCam\\",
+                    REG_DWORD, RRF_RT_DWORD);
+        }
+
+        AFCConfig load()
+        {
+            AFCConfig config = { 0 };
+
+            // TODO Registry factory
+            config.moveAmount = (unsigned short)
+                this->dwordHibernation->load(L"CameraArrowKeyStep");
+            config.resolution.height = (unsigned short)
+                this->dwordHibernation->load(L"CameraHeight");
+            config.resolution.width = (unsigned short)
+                this->dwordHibernation->load(L"CameraWidth");
+            config.fpsRate = (unsigned char)
+                this->dwordHibernation->load(L"CameraFPSRate");
+
+            return config;
+        }
+
+        void store(AFCConfig config)
+        {
+            this->dwordHibernation->store(L"CameraArrowKeyStep",
+                                          config.moveAmount);
+            this->dwordHibernation->store(L"CameraHeight",
+                                          config.resolution.height);
+            this->dwordHibernation->store(L"CameraWidth",
+                                          config.resolution.width);
+            this->dwordHibernation->store(L"CameraFPSRate",
+                                          config.fpsRate);
+        }
+
+    private:
+        std::unique_ptr<::RegistryValueHibernation<DWORD>> dwordHibernation;
+};
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance,
                       _In_ LPWSTR    lpCmdLine,
@@ -27,42 +74,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         lpCmdLine,
         &application.argc);
 
+    auto configHibernation = ConfigHibernation();
+    application.config = configHibernation.load();
+
     return AtomicFaceCam::Main();
-}
-
-void AtomicFaceCam::LoadConfiguration()
-{
-    RegistryValueHibernation<DWORD> hibernation(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        REG_DWORD, RRF_RT_DWORD, 4);
-
-    application.config.moveAmount =
-        (unsigned short) hibernation.load(L"CameraArrowKeyStep");
-    application.config.resolution.height =
-        (unsigned short) hibernation.load(L"CameraHeight");
-    application.config.resolution.width =
-        (unsigned short) hibernation.load(L"CameraWidth");
-    application.config.fpsRate =
-        (unsigned char) hibernation.load(L"CameraFPSRate");
-}
-
-void AtomicFaceCam::SaveConfiguration()
-{
-    RegistryValueHibernation<DWORD> hibernation(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        REG_DWORD, RRF_RT_DWORD, 4);
-
-    hibernation.store(L"CameraArrowKeyStep", application.config.moveAmount);
-    hibernation.store(L"CameraHeight", application.config.resolution.height);
-    hibernation.store(L"CameraWidth", application.config.resolution.width);
-    hibernation.store(L"CameraFPSRate", application.config.fpsRate);
 }
 
 int AtomicFaceCam::Main()
 {
-    LoadConfiguration();
     MyRegisterClass();
 
     if (!InitInstance(application.nCmdShow))
@@ -518,7 +537,7 @@ INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WP
             application.config.fpsRate =
                 (unsigned char) GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
 
-            SaveConfiguration();
+            ConfigHibernation().store(application.config);
 
             EndDialog(hwnd, IDOK);
             break;

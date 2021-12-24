@@ -2,6 +2,7 @@
 #define PCH_H
 
 #include <functional>
+#include <memory>
 #include <list>
 #include <tuple>
 

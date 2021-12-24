@@ -81,15 +81,15 @@ public:
         HKEY hKey,
         const wchar_t* subKey,
         DWORD regKeyType,
-        DWORD regKeyFlags,
-        DWORD bufferSize
+        DWORD regKeyFlags
     )
     {
+        UNREFERENCED_PARAMETER(bufferSize);
         this->hKey = hKey;
         this->subKey = subKey;
         this->regKeyType = regKeyType;
         this->regKeyFlags = regKeyFlags;
-        this->bufferSize = bufferSize;
+        this->bufferSize = sizeof(ObjectType);
     }
     ObjectType load(const wchar_t* id)
     {

@@ -41,8 +41,6 @@ namespace AtomicFaceCam
 {
     ATOM MyRegisterClass();
     BOOL InitInstance(int);
-    void LoadConfiguration();
-    void SaveConfiguration();
 
     int Main();
     LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
