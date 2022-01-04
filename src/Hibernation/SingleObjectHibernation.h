@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * "Single objects" are objects which only exist once per application.
  * This mostly applies to objects which are only loaded once at application

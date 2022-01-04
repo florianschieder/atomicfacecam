@@ -28,12 +28,10 @@ struct AFCApp
 
 namespace AtomicFaceCam
 {
-    AFCApp application;
-
     ATOM MyRegisterClass();
     BOOL InitInstance(int);
 
-    int Main();
+    int Main(AFCApp app);
     LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 
     INT_PTR CALLBACK HelpDlgProc(HWND, UINT, WPARAM, LPARAM);
