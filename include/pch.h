@@ -1,7 +1,7 @@
 #ifndef PCH_H
 #define PCH_H
 
-#include "targetver.h"
+#include "../res/targetver.h"
 
 #include <Windows.h>
 #include <Vfw.h>

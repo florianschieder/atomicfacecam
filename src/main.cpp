@@ -1,18 +1,16 @@
 #include "pch.h"
 #include "AtomicFaceCam.h"
 
-AtomicFaceCamApp application;
+using namespace AtomicFaceCam;
+
+AppWithDefaults application;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    INITCOMMONCONTROLSEX icc;
-    icc.dwSize = sizeof(INITCOMMONCONTROLSEX);
-    icc.dwICC = ICC_STANDARD_CLASSES | ICC_WIN95_CLASSES;
-
-    InitCommonControlsEx(&icc);
+    UI::InitializeCommonControls();
 
     application.hInstance = hInstance;
     application.nCmdShow = nCmdShow;
@@ -28,90 +26,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return AtomicFaceCam::Main();
 }
 
-void AtomicFaceCam::LoadConfiguration()
-{
-    DWORD bufferSize = 4;
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraArrowKeyStep",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID) &application.arrowStep,
-        &bufferSize);
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraHeight",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.hMainWndHeight,
-        &bufferSize);
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraWidth",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.hMainWndWidth,
-        &bufferSize);
-
-    RegGetValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraFPSRate",
-        RRF_RT_DWORD,
-        NULL,
-        (PVOID)&application.fpsRate,
-        &bufferSize);
-}
-
-void AtomicFaceCam::SaveConfiguration()
-{
-    DWORD bufferSize = 4;
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraArrowKeyStep",
-        REG_DWORD,
-        (LPVOID) &application.arrowStep,
-        bufferSize);
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraWidth",
-        REG_DWORD,
-        (LPVOID) &application.hMainWndWidth,
-        bufferSize);
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraHeight",
-        REG_DWORD,
-        (LPVOID) &application.hMainWndHeight,
-        bufferSize);
-
-    RegSetKeyValue(
-        HKEY_CURRENT_USER,
-        L"SOFTWARE\\AtomicFaceCam\\",
-        L"CameraFPSRate",
-        REG_DWORD,
-        (LPVOID) &application.fpsRate,
-        bufferSize);
-}
-
 int AtomicFaceCam::Main()
 {
-    LoadConfiguration();
-    MyRegisterClass();
+    Config::Load(application);
+    UI::MyRegisterClass(application);
 
-    if (!InitInstance(application.nCmdShow))
+    if (!UI::InitInstance(application))
     {
         return FALSE;
     }
@@ -138,66 +58,8 @@ int AtomicFaceCam::Main()
     return (int) msg.wParam;
 }
 
-ATOM AtomicFaceCam::MyRegisterClass()
-{
-    WNDCLASSEXW wcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
-    
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = MainWndProc;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = application.hInstance;
-    wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
-    wcex.lpszMenuName = NULL;
-    wcex.lpszClassName = application.szMainWindowClass;
-
-    wcex.hCursor = LoadCursor(
-        application.hInstance,
-        IDC_ARROW);
-
-    wcex.hIcon = LoadIcon(
-        application.hInstance,
-        MAKEINTRESOURCE(IDI_ATOMICFACECAM));
-
-    wcex.hIconSm = LoadIcon(
-        application.hInstance,
-        MAKEINTRESOURCE(IDI_ATOMICFACECAM));
-
-    return RegisterClassExW(&wcex);
-}
-
-BOOL AtomicFaceCam::InitInstance(int nCmdShow)
-{
-    application.hMainWnd = CreateWindowW(
-        application.szMainWindowClass,
-        application.szTitle,
-        WS_POPUP | WS_VISIBLE | WS_SYSMENU,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        application.hMainWndWidth,
-        application.hMainWndHeight,
-        NULL,
-        NULL,
-        application.hInstance,
-        NULL);
-
-    if (!application.hMainWnd)
-    {
-      return FALSE;
-    }
-
-    ShowWindow(
-        application.hMainWnd,
-        nCmdShow);
-
-    UpdateWindow(application.hMainWnd);
-
-    return TRUE;
-}
-
-LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK UI::Callbacks::MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
@@ -460,7 +322,7 @@ LRESULT CALLBACK AtomicFaceCam::MainWndProc(HWND hWnd, UINT message, WPARAM wPar
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-INT_PTR CALLBACK AtomicFaceCam::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK UI::Callbacks::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
     switch (Message)
     {
@@ -484,7 +346,7 @@ INT_PTR CALLBACK AtomicFaceCam::AboutDlgProc(HWND hwnd, UINT Message, WPARAM wPa
     return TRUE;
 }
 
-INT_PTR CALLBACK AtomicFaceCam::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK UI::Callbacks::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
     switch (Message)
     {
@@ -508,7 +370,7 @@ INT_PTR CALLBACK AtomicFaceCam::HelpDlgProc(HWND hwnd, UINT Message, WPARAM wPar
     return TRUE;
 }
 
-INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK UI::Callbacks::ConfigurationDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
     switch (Message)
     {
@@ -554,7 +416,7 @@ INT_PTR CALLBACK AtomicFaceCam::ConfigurationDlgProc(HWND hwnd, UINT Message, WP
             application.arrowStep = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
             application.fpsRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
 
-            SaveConfiguration();
+            Config::Save(application);
 
             EndDialog(hwnd, IDOK);
             break;
