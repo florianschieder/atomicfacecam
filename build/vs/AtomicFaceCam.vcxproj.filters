@@ -15,43 +15,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
+    <ClInclude Include="$(SolutionDir)include\AtomicFaceCam.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="$(SolutionDir)include\pch.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="AtomicFaceCam.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="$(SolutionDir)res\Resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AtomicFaceCam.cpp">
+    <ClCompile Include="$(SolutionDir)src\core\config.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="$(SolutionDir)src\main.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)src\pch.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)src\ui\init.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="AtomicFaceCam.rc">
+    <ResourceCompile Include="$(SolutionDir)res\AtomicFaceCam.rc">
       <Filter>Ressourcendateien</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\about.ico">
+    <Image Include="$(SolutionDir)res\about.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
-    <Image Include="res\AtomicFaceCam.ico">
+    <Image Include="$(SolutionDir)res\AtomicFaceCam.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
-    <Image Include="res\help.ico">
+    <Image Include="$(SolutionDir)res\help.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
   </ItemGroup>
