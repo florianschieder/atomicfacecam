@@ -264,10 +264,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AtomicFaceCam.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AtomicFaceCam.cpp" />

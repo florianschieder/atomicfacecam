@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resource.h"
-#include "framework.h"
+#include "pch.h"
 
 struct AtomicFaceCamApp
 {
