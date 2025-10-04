@@ -4,7 +4,7 @@
 using namespace AtomicFaceCam;
 
 
-INT_PTR CALLBACK UI::Callbacks::ConfigurationDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK UI::Callbacks::ConfigurationDialog(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
     auto application = RetrieveAppInstance(hwnd, Message, lParam);
     switch (Message)

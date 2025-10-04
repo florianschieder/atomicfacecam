@@ -8,6 +8,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    UNREFERENCED_PARAMETER(hPrevInstance);
+
     AppWithDefaults application;
 
     UI::InitializeCommonControls();
@@ -29,9 +31,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 int AtomicFaceCam::Main(AppWithDefaults& application)
 {
     Config::Load(application);
-    UI::MyRegisterClass(application);
+    UI::RegisterMainWindow(application);
 
-    if (!UI::InitInstance(application))
+    if (!UI::InitializeMainWindow(application))
     {
         return FALSE;
     }

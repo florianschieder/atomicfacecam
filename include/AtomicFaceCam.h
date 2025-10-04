@@ -38,16 +38,14 @@ namespace AtomicFaceCam
 
     namespace UI {
         void InitializeCommonControls();
-        ATOM MyRegisterClass(const AppWithDefaults&);
-        BOOL InitInstance(AppWithDefaults&);
+        ATOM RegisterMainWindow(const AppWithDefaults&);
+        BOOL InitializeMainWindow(AppWithDefaults&);
         AppWithDefaults* RetrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
 
         namespace Callbacks {
-            LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
-
-            INT_PTR CALLBACK HelpDlgProc(HWND, UINT, WPARAM, LPARAM);
-            INT_PTR CALLBACK AboutDlgProc(HWND, UINT, WPARAM, LPARAM);
-            INT_PTR CALLBACK ConfigurationDlgProc(HWND, UINT, WPARAM, LPARAM);
+            LRESULT CALLBACK MainWindow(HWND, UINT, WPARAM, LPARAM);
+            INT_PTR CALLBACK StandardDialog(HWND, UINT, WPARAM, LPARAM);
+            INT_PTR CALLBACK ConfigurationDialog(HWND, UINT, WPARAM, LPARAM);
         }
     }
 }
