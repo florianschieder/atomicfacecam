@@ -5,7 +5,7 @@
 using namespace AtomicFaceCam;
 
 
-ATOM UI::registerMainWindow(const AppState& application)
+ATOM UI::registerMainWindow(const AppState& application) noexcept
 {
     WNDCLASSEXW wcex;
 
@@ -35,7 +35,7 @@ ATOM UI::registerMainWindow(const AppState& application)
     return RegisterClassExW(&wcex);
 }
 
-void UI::initializeMainWindow(AppState& application)
+void UI::initializeMainWindow(AppState& application) noexcept
 {
     application.mainWindowHandle = CreateWindowExW(
         0,
@@ -55,7 +55,7 @@ void UI::initializeMainWindow(AppState& application)
     UpdateWindow(application.mainWindowHandle);
 }
 
-void AtomicFaceCam::UI::initializeCommonControls()
+void AtomicFaceCam::UI::initializeCommonControls() noexcept
 {
     INITCOMMONCONTROLSEX icc;
     icc.dwSize = sizeof(INITCOMMONCONTROLSEX);

@@ -4,12 +4,13 @@
 using namespace AtomicFaceCam;
 
 
-void initializeConfigDialog(HWND hWnd, const AppState * const appState)
+void initializeConfigDialog(
+    HWND hWnd, const AppState * const appState) noexcept
 {
-    auto lowResolutionChecked =
+    const auto lowResolutionChecked =
         appState->mainWindowWidth == 320
         && appState->mainWindowHeight == 240;
-    auto highResolutionChecked =
+    const auto highResolutionChecked =
         appState->mainWindowWidth == 640
         && appState->mainWindowHeight == 480;
 
@@ -20,7 +21,8 @@ void initializeConfigDialog(HWND hWnd, const AppState * const appState)
 }
 
 
-void reflectConfigurationIntoAppState(HWND hWnd, AppState * const appState)
+void reflectConfigurationIntoAppState(
+    HWND hWnd, AppState * const appState) noexcept
 {
     if (IsDlgButtonChecked(hWnd, IDC_RADIO320240)) {
         appState->mainWindowWidth = 320;
@@ -35,24 +37,24 @@ void reflectConfigurationIntoAppState(HWND hWnd, AppState * const appState)
 }
 
 void reflectConfigurationIntoAppStateOnOK(
-    HWND hWnd, WPARAM wParam, AppState *appState)
+    HWND hWnd, WPARAM wParam, AppState * appState) noexcept
 {
-    if (LOWORD(wParam) == IDOK) {
+    if (LOWORD(wParam) == IDOK && appState != NULL) {
         reflectConfigurationIntoAppState(hWnd, appState);
         Config::save(*appState);
     }
 }
 
-void closeDialogIfTriggered(HWND hWnd, WPARAM wParam)
+void closeDialogIfTriggered(HWND hWnd, WPARAM wParam) noexcept
 {
-    auto command = LOWORD(wParam);
+    const auto command = LOWORD(wParam);
     if (command == IDOK || command == IDCANCEL) {
         EndDialog(hWnd, command);
     }
 }
 
 INT_PTR CALLBACK UI::Callbacks::configurationDialog(
-    HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
     auto appState = getAppState(hWnd, msg, lParam);
     switch (msg)

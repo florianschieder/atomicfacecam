@@ -4,13 +4,13 @@
 using namespace AtomicFaceCam;
 
 
-void initializeUIArtifacts(const AppState& application)
+void initializeUIArtifacts(const AppState& application) noexcept
 {
     UI::initializeCommonControls();
     UI::registerMainWindow(application);
 }
 
-void applyDesktopDimensions(AppState& application)
+void applyDesktopDimensions(AppState& application) noexcept
 {
     const auto hDesktopWindow = GetDesktopWindow();
 
@@ -22,7 +22,7 @@ void applyDesktopDimensions(AppState& application)
 }
 
 
-int enterMainLoop()
+int enterMainLoop() noexcept
 {
     MSG msg;
 
@@ -35,11 +35,15 @@ int enterMainLoop()
 }
 
 
+// We want to scratch down the original 'wWinMain' signature
+// without being bothered by "you can do this and that with const here"
+#pragma warning(disable : 26461)
 int APIENTRY wWinMain(
     _In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR lpCmdLine,
     _In_ int nCmdShow)
+#pragma warning(default : 26461)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);

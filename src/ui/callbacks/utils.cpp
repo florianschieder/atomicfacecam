@@ -3,7 +3,7 @@
 
 using namespace AtomicFaceCam;
 
-AppState* UI::getAppState(HWND hWnd, UINT message, LPARAM lParam)
+AppState* UI::getAppState(HWND hWnd, UINT message, LPARAM lParam) noexcept
 {
     if (message == WM_CREATE || message == WM_INITDIALOG) {
         SetWindowLongPtr(hWnd, GWLP_USERDATA, *(LONG_PTR*) lParam);

@@ -5,7 +5,7 @@ using namespace AtomicFaceCam;
 
 
 HWND initializeCameraHandle(
-    const AppState* appState, HWND mainWindowHandle)
+    const AppState* appState, HWND mainWindowHandle) noexcept
 {
     auto cameraHandle = capCreateCaptureWindow(
         appState->mainWindowClass,
@@ -18,7 +18,7 @@ HWND initializeCameraHandle(
         // yet initialized here.
         mainWindowHandle,
         0);
-    auto previewRate = 1000 / appState->cameraFPSRate;
+    const auto previewRate = 1000 / appState->cameraFPSRate;
 
     SendMessage(cameraHandle, WM_CAP_DRIVER_CONNECT, 0, 0);
     SendMessage(cameraHandle, WM_CAP_SET_SCALE, 1, 0);
@@ -30,7 +30,7 @@ HWND initializeCameraHandle(
 
 
 void setInitialWindowPosition(
-    const AppState* appState, HWND mainWindowHandle)
+    const AppState* appState, HWND mainWindowHandle) noexcept
 {
     SetWindowPos(
         // we cannot use appState->mainWindowHandle because it is not
@@ -51,7 +51,7 @@ struct FixedPositionDescriptor {
     XAxis x;
     YAxis y;
 
-    POINT calcAbsoluteCoordinates(AppState* appState) const {
+    POINT calcAbsoluteCoordinates(const AppState* appState) const noexcept {
         return {
             .x = this->getAbsoluteX(appState),
             .y = this->getAbsoluteY(appState),
@@ -59,8 +59,8 @@ struct FixedPositionDescriptor {
     }
 
     private:
-        long getAbsoluteX(AppState *appState) const {
-            auto maxX = appState->desktopWidth - appState->mainWindowWidth;
+        long getAbsoluteX(const AppState *appState) const noexcept {
+            const auto maxX = appState->desktopWidth - appState->mainWindowWidth;
             switch (this->x) {
                 case XAxis::Left: return 0;
                 case XAxis::Center: return maxX / 2;
@@ -69,8 +69,8 @@ struct FixedPositionDescriptor {
             return -1; // unreachable
         }
 
-        long getAbsoluteY(AppState *appState) const {
-            auto maxY = appState->desktopHeight - appState->mainWindowHeight;
+        long getAbsoluteY(const AppState *appState) const noexcept {
+            const auto maxY = appState->desktopHeight - appState->mainWindowHeight;
             switch (this->y) {
                 case YAxis::Top: return 0;
                 case YAxis::Middle: return maxY / 2;
@@ -107,11 +107,11 @@ void updateWindowPositionByNumPad(AppState* appState, UINT key)
 }
 
 
-void moveWindowByArrowStep(AppState* appState, UINT key)
+void moveWindowByArrowStep(AppState* appState, UINT key) noexcept
 {
-    auto delta = (key == VK_UP || key == VK_LEFT)
-                 ? -appState->pixelsToMove
-                 : appState->pixelsToMove;
+    const auto delta = (key == VK_UP || key == VK_LEFT)
+                       ? -appState->pixelsToMove
+                       : appState->pixelsToMove;
 
     RECT rect;
     GetWindowRect(appState->mainWindowHandle, &rect);
@@ -133,7 +133,7 @@ void moveWindowByArrowStep(AppState* appState, UINT key)
 }
 
 
-void spawnHelpDialog(const AppState *appState)
+void spawnHelpDialog(const AppState *appState) noexcept
 {
     DialogBox(
         appState->hInstance,
@@ -143,7 +143,7 @@ void spawnHelpDialog(const AppState *appState)
 }
 
 
-void spawnConfigDialog(const AppState *appState)
+void spawnConfigDialog(const AppState *appState) noexcept
 {
     DialogBoxParamW(
         appState->hInstance,
@@ -154,8 +154,8 @@ void spawnConfigDialog(const AppState *appState)
 }
 
 
-void spawnAboutDialog(const AppState *appState)
-{               
+void spawnAboutDialog(const AppState *appState) noexcept
+{              
     DialogBox(
         appState->hInstance,
         MAKEINTRESOURCE(IDD_ABOUT),
@@ -188,7 +188,8 @@ void handlePressedKey(AppState* appState, UINT key)
 }
 
 
-LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK UI::Callbacks::mainWindow(
+    HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     auto appState = getAppState(hWnd, message, lParam);
     switch (message)

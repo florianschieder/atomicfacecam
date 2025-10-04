@@ -1,6 +1,10 @@
 #ifndef PCH_H
 #define PCH_H
 
+// We are making heavy use of low-level C-APIs and are (hopefully ;)) aware
+// of what where doing with C-style casts which is what C26461 warns about.
+#pragma warning(disable : 26493)
+
 #include "../res/targetver.h"
 
 #include <map>

@@ -4,7 +4,7 @@
 using namespace AtomicFaceCam;
 
 INT_PTR CALLBACK UI::Callbacks::standardDialog(
-    HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+    HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
     UNREFERENCED_PARAMETER(lParam);
     switch (msg)
@@ -14,7 +14,7 @@ INT_PTR CALLBACK UI::Callbacks::standardDialog(
 
         case WM_COMMAND:
         {
-            auto callback = LOWORD(wParam);
+            const auto callback = LOWORD(wParam);
             if (callback == IDOK || callback == IDCANCEL) {
                 EndDialog(hWnd, callback);
             }

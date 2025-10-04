@@ -4,7 +4,7 @@
 using namespace AtomicFaceCam;
 
 
-void Config::loadInto(AppState& application)
+void Config::loadInto(AppState& application) noexcept
 {
     DWORD bufferSize = 4;
 
@@ -45,9 +45,9 @@ void Config::loadInto(AppState& application)
         &bufferSize);
 }
 
-void Config::save(const AppState& application)
+void Config::save(const AppState& application) noexcept
 {
-    DWORD bufferSize = 4;
+    constexpr auto bufferSize = 4;
 
     RegSetKeyValue(
         HKEY_CURRENT_USER,
