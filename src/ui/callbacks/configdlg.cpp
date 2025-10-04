@@ -13,25 +13,25 @@ INT_PTR CALLBACK UI::Callbacks::ConfigurationDialog(HWND hwnd, UINT Message, WPA
         CheckDlgButton(
             hwnd,
             IDC_RADIO320240,
-            (application->hMainWndWidth == 320
-             && application->hMainWndHeight == 240));
+            (application->mainWindowWidth == 320
+             && application->mainWindowHeight == 240));
 
         CheckDlgButton(
             hwnd,
             IDC_RADIO640480,
-            (application->hMainWndWidth == 640
-             && application->hMainWndHeight == 480));
+            (application->mainWindowWidth == 640
+             && application->mainWindowHeight == 480));
 
         SetDlgItemInt(
             hwnd,
             IDC_ARROWSTEP,
-            application->arrowStep,
+            application->pixelsToMove,
             TRUE);
 
         SetDlgItemInt(
             hwnd,
             IDC_FPS,
-            application->fpsRate,
+            application->cameraFPSRate,
             TRUE);
 
         return TRUE;
@@ -42,16 +42,16 @@ INT_PTR CALLBACK UI::Callbacks::ConfigurationDialog(HWND hwnd, UINT Message, WPA
         case IDOK:
             if (IsDlgButtonChecked(hwnd, IDC_RADIO320240))
             {
-                application->hMainWndWidth = 320;
-                application->hMainWndHeight = 240;
+                application->mainWindowWidth = 320;
+                application->mainWindowHeight = 240;
             } else if (IsDlgButtonChecked(hwnd, IDC_RADIO640480))
             {
-                application->hMainWndWidth = 640;
-                application->hMainWndHeight = 480;
+                application->mainWindowWidth = 640;
+                application->mainWindowHeight = 480;
             }
 
-            application->arrowStep = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
-            application->fpsRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
+            application->pixelsToMove = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
+            application->cameraFPSRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
 
             Config::Save(*application);
 

@@ -4,7 +4,7 @@
 using namespace AtomicFaceCam;
 
 
-void Config::Load(const AppWithDefaults& application)
+void Config::loadInto(App& application)
 {
     DWORD bufferSize = 4;
 
@@ -14,7 +14,7 @@ void Config::Load(const AppWithDefaults& application)
         L"CameraArrowKeyStep",
         RRF_RT_DWORD,
         NULL,
-        (PVOID) &application.arrowStep,
+        (PVOID) &application.pixelsToMove,
         &bufferSize);
 
     RegGetValue(
@@ -23,7 +23,7 @@ void Config::Load(const AppWithDefaults& application)
         L"CameraHeight",
         RRF_RT_DWORD,
         NULL,
-        (PVOID)&application.hMainWndHeight,
+        (PVOID)&application.mainWindowHeight,
         &bufferSize);
 
     RegGetValue(
@@ -32,7 +32,7 @@ void Config::Load(const AppWithDefaults& application)
         L"CameraWidth",
         RRF_RT_DWORD,
         NULL,
-        (PVOID)&application.hMainWndWidth,
+        (PVOID)&application.mainWindowWidth,
         &bufferSize);
 
     RegGetValue(
@@ -41,11 +41,11 @@ void Config::Load(const AppWithDefaults& application)
         L"CameraFPSRate",
         RRF_RT_DWORD,
         NULL,
-        (PVOID)&application.fpsRate,
+        (PVOID)&application.cameraFPSRate,
         &bufferSize);
 }
 
-void Config::Save(const AppWithDefaults& application)
+void Config::Save(const App& application)
 {
     DWORD bufferSize = 4;
 
@@ -54,7 +54,7 @@ void Config::Save(const AppWithDefaults& application)
         L"SOFTWARE\\AtomicFaceCam\\",
         L"CameraArrowKeyStep",
         REG_DWORD,
-        (LPVOID) &application.arrowStep,
+        (LPVOID) &application.pixelsToMove,
         bufferSize);
 
     RegSetKeyValue(
@@ -62,7 +62,7 @@ void Config::Save(const AppWithDefaults& application)
         L"SOFTWARE\\AtomicFaceCam\\",
         L"CameraWidth",
         REG_DWORD,
-        (LPVOID) &application.hMainWndWidth,
+        (LPVOID) &application.mainWindowWidth,
         bufferSize);
 
     RegSetKeyValue(
@@ -70,7 +70,7 @@ void Config::Save(const AppWithDefaults& application)
         L"SOFTWARE\\AtomicFaceCam\\",
         L"CameraHeight",
         REG_DWORD,
-        (LPVOID) &application.hMainWndHeight,
+        (LPVOID) &application.mainWindowHeight,
         bufferSize);
 
     RegSetKeyValue(
@@ -78,6 +78,6 @@ void Config::Save(const AppWithDefaults& application)
         L"SOFTWARE\\AtomicFaceCam\\",
         L"CameraFPSRate",
         REG_DWORD,
-        (LPVOID) &application.fpsRate,
+        (LPVOID) &application.cameraFPSRate,
         bufferSize);
 }

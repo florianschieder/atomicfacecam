@@ -5,7 +5,7 @@
 using namespace AtomicFaceCam;
 
 
-ATOM UI::RegisterMainWindow(const AppWithDefaults& application)
+ATOM UI::RegisterMainWindow(const App& application)
 {
     WNDCLASSEXW wcex;
 
@@ -18,7 +18,7 @@ ATOM UI::RegisterMainWindow(const AppWithDefaults& application)
     wcex.hInstance = application.hInstance;
     wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;
-    wcex.lpszClassName = application.szMainWindowClass;
+    wcex.lpszClassName = application.mainWindowClass;
 
     wcex.hCursor = LoadCursor(
         application.hInstance,
@@ -35,31 +35,24 @@ ATOM UI::RegisterMainWindow(const AppWithDefaults& application)
     return RegisterClassExW(&wcex);
 }
 
-BOOL UI::InitializeMainWindow(AppWithDefaults& application)
+void UI::InitializeMainWindow(App& application)
 {
-    application.hMainWnd = CreateWindowExW(
+    application.mainWindowHandle = CreateWindowExW(
         0,
-        application.szMainWindowClass,
-        application.szTitle,
+        application.mainWindowClass,
+        application.mainWindowTitle,
         WS_POPUP | WS_VISIBLE | WS_SYSMENU,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        application.hMainWndWidth,
-        application.hMainWndHeight,
+        application.mainWindowWidth,
+        application.mainWindowHeight,
         NULL,
         NULL,
         application.hInstance,
         (LPVOID) &application);
 
-    if (!application.hMainWnd)
-    {
-      return FALSE;
-    }
-
-    ShowWindow(application.hMainWnd, application.nCmdShow);
-    UpdateWindow(application.hMainWnd);
-
-    return TRUE;
+    ShowWindow(application.mainWindowHandle, application.nCmdShow);
+    UpdateWindow(application.mainWindowHandle);
 }
 
 void AtomicFaceCam::UI::InitializeCommonControls()

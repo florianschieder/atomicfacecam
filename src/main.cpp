@@ -3,59 +3,61 @@
 
 using namespace AtomicFaceCam;
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+
+void initializeUIArtifacts(const App& application)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-
-    AppWithDefaults application;
-
     UI::InitializeCommonControls();
-
-    application.hInstance = hInstance;
-    application.nCmdShow = nCmdShow;
-
-    application.szTitle = L"Atomic Face Cam";
-    application.szMainWindowClass = L"AtomicFaceCamWindow";
-    application.szCameraClass = L"AtomicFaceCamCamera";
-
-    application.argv = CommandLineToArgvW(
-        lpCmdLine,
-        &application.argc);
-
-    return AtomicFaceCam::Main(application);
+    UI::RegisterMainWindow(application);
 }
 
-int AtomicFaceCam::Main(AppWithDefaults& application)
+void applyDesktopDimensions(App& application)
 {
-    Config::Load(application);
-    UI::RegisterMainWindow(application);
+    const auto hDesktopWindow = GetDesktopWindow();
 
-    if (!UI::InitializeMainWindow(application))
-    {
-        return FALSE;
-    }
-
-    HWND hDesktopWindow = GetDesktopWindow();
-    RECT hDesktopRect = { 0 };
-
+    RECT hDesktopRect;
     GetWindowRect(hDesktopWindow, &hDesktopRect);
+
     application.desktopHeight = hDesktopRect.bottom - hDesktopRect.top;
     application.desktopWidth = hDesktopRect.right - hDesktopRect.left;
+}
 
+
+int enterMainLoop()
+{
     MSG msg;
 
-    while (GetMessage(
-        &msg,
-        NULL,
-        0,
-        0))
-    {
+    while (GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
     return (int) msg.wParam;
+}
+
+
+int APIENTRY wWinMain(
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR lpCmdLine,
+    _In_ int nCmdShow)
+{
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
+    App application = {
+        .hInstance = hInstance,
+        .nCmdShow = nCmdShow,
+
+        .mainWindowTitle = L"Atomic Face Cam",
+        .mainWindowClass = L"AtomicFaceCamWindow",
+        .cameraControlClass = L"AtomicFaceCamCamera",
+    };
+
+    initializeUIArtifacts(application);
+    applyDesktopDimensions(application);
+    Config::loadInto(application);
+
+    UI::InitializeMainWindow(application);
+
+    return enterMainLoop();
 }

@@ -5,42 +5,39 @@
 
 namespace AtomicFaceCam
 {
-    struct AppWithDefaults
+    struct App
     {
-        HINSTANCE hInstance = NULL;
-        int nCmdShow = SW_SHOW;
-        HWND hMainWnd = NULL;
-        HWND hWebCam = NULL;
+        HINSTANCE hInstance;
+        int nCmdShow;
+        HWND mainWindowHandle;
+        HWND cameraControlHandle;
 
-        int argc = 0;
-        WCHAR** argv = NULL;
+        LPCTSTR mainWindowTitle;
+        LPCTSTR mainWindowClass;
+        LPCTSTR cameraControlClass;
 
-        LPCTSTR szTitle = L"";
-        LPCTSTR szMainWindowClass = L"";
-        LPCTSTR szCameraClass = L"";
+        int mainWindowWidth;
+        int mainWindowHeight;
+        int cameraFPSRate;
 
-        int hMainWndWidth = 320;
-        int hMainWndHeight = 240;
-        int fpsRate = 20;
+        int desktopWidth;
+        int desktopHeight;
 
-        int desktopWidth = 0;
-        int desktopHeight = 0;
-
-        int arrowStep = 10;
+        int pixelsToMove;
     };
 
-    int Main(AppWithDefaults&);
+    int Main(App&);
 
     namespace Config {
-        void Load(const AppWithDefaults&);
-        void Save(const AppWithDefaults&);
+        void loadInto(App&);
+        void Save(const App&);
     }
 
     namespace UI {
         void InitializeCommonControls();
-        ATOM RegisterMainWindow(const AppWithDefaults&);
-        BOOL InitializeMainWindow(AppWithDefaults&);
-        AppWithDefaults* RetrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
+        ATOM RegisterMainWindow(const App&);
+        void InitializeMainWindow(App&);
+        App* RetrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
 
         namespace Callbacks {
             LRESULT CALLBACK MainWindow(HWND, UINT, WPARAM, LPARAM);
