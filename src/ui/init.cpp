@@ -5,7 +5,7 @@
 using namespace AtomicFaceCam;
 
 
-ATOM UI::registerMainWindow(const App& application)
+ATOM UI::registerMainWindow(const AppState& application)
 {
     WNDCLASSEXW wcex;
 
@@ -35,7 +35,7 @@ ATOM UI::registerMainWindow(const App& application)
     return RegisterClassExW(&wcex);
 }
 
-void UI::initializeMainWindow(App& application)
+void UI::initializeMainWindow(AppState& application)
 {
     application.mainWindowHandle = CreateWindowExW(
         0,

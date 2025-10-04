@@ -4,66 +4,69 @@
 using namespace AtomicFaceCam;
 
 
-INT_PTR CALLBACK UI::Callbacks::configurationDialog(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+void initializeConfigDialog(HWND hWnd, const AppState * const appState)
 {
-    auto application = retrieveAppInstance(hwnd, Message, lParam);
-    switch (Message)
-    {
-    case WM_INITDIALOG:
-        CheckDlgButton(
-            hwnd,
-            IDC_RADIO320240,
-            (application->mainWindowWidth == 320
-             && application->mainWindowHeight == 240));
+    auto lowResolutionChecked =
+        appState->mainWindowWidth == 320
+        && appState->mainWindowHeight == 240;
+    auto highResolutionChecked =
+        appState->mainWindowWidth == 640
+        && appState->mainWindowHeight == 480;
 
-        CheckDlgButton(
-            hwnd,
-            IDC_RADIO640480,
-            (application->mainWindowWidth == 640
-             && application->mainWindowHeight == 480));
+    CheckDlgButton(hWnd, IDC_RADIO320240, lowResolutionChecked);
+    CheckDlgButton(hWnd, IDC_RADIO640480, highResolutionChecked);
+    SetDlgItemInt(hWnd, IDC_ARROWSTEP, appState->pixelsToMove, true);
+    SetDlgItemInt(hWnd, IDC_FPS, appState->cameraFPSRate, true);
+}
 
-        SetDlgItemInt(
-            hwnd,
-            IDC_ARROWSTEP,
-            application->pixelsToMove,
-            TRUE);
 
-        SetDlgItemInt(
-            hwnd,
-            IDC_FPS,
-            application->cameraFPSRate,
-            TRUE);
-
-        return TRUE;
-
-    case WM_COMMAND:
-        switch (LOWORD(wParam))
-        {
-        case IDOK:
-            if (IsDlgButtonChecked(hwnd, IDC_RADIO320240))
-            {
-                application->mainWindowWidth = 320;
-                application->mainWindowHeight = 240;
-            } else if (IsDlgButtonChecked(hwnd, IDC_RADIO640480))
-            {
-                application->mainWindowWidth = 640;
-                application->mainWindowHeight = 480;
-            }
-
-            application->pixelsToMove = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
-            application->cameraFPSRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
-
-            Config::save(*application);
-
-            EndDialog(hwnd, IDOK);
-            break;
-        case IDCANCEL:
-            EndDialog(hwnd, IDCANCEL);
-            break;
-        }
-        break;
-    default:
-        return FALSE;
+void reflectConfigurationIntoAppState(HWND hWnd, AppState * const appState)
+{
+    if (IsDlgButtonChecked(hWnd, IDC_RADIO320240)) {
+        appState->mainWindowWidth = 320;
+        appState->mainWindowHeight = 240;
     }
-    return TRUE;
+    else if (IsDlgButtonChecked(hWnd, IDC_RADIO640480)) {
+        appState->mainWindowWidth = 640;
+        appState->mainWindowHeight = 480;
+    }
+    appState->pixelsToMove = GetDlgItemInt(hWnd, IDC_ARROWSTEP, NULL, true);
+    appState->cameraFPSRate = GetDlgItemInt(hWnd, IDC_FPS, NULL, true);
+}
+
+void reflectConfigurationIntoAppStateOnOK(
+    HWND hWnd, WPARAM wParam, AppState *appState)
+{
+    if (LOWORD(wParam) == IDOK) {
+        reflectConfigurationIntoAppState(hWnd, appState);
+        Config::save(*appState);
+    }
+}
+
+void closeDialogIfTriggered(HWND hWnd, WPARAM wParam)
+{
+    auto command = LOWORD(wParam);
+    if (command == IDOK || command == IDCANCEL) {
+        EndDialog(hWnd, command);
+    }
+}
+
+INT_PTR CALLBACK UI::Callbacks::configurationDialog(
+    HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    auto appState = getAppState(hWnd, msg, lParam);
+    switch (msg)
+    {
+        case WM_INITDIALOG:
+            initializeConfigDialog(hWnd, appState);
+            return true;
+
+        case WM_COMMAND:
+            reflectConfigurationIntoAppStateOnOK(hWnd, wParam, appState);
+            closeDialogIfTriggered(hWnd, wParam);
+            return true;
+
+        default:
+            return false;
+    }
 }

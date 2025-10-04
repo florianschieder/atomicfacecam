@@ -4,7 +4,7 @@
 using namespace AtomicFaceCam;
 
 
-void Config::loadInto(App& application)
+void Config::loadInto(AppState& application)
 {
     DWORD bufferSize = 4;
 
@@ -45,7 +45,7 @@ void Config::loadInto(App& application)
         &bufferSize);
 }
 
-void Config::save(const App& application)
+void Config::save(const AppState& application)
 {
     DWORD bufferSize = 4;
 

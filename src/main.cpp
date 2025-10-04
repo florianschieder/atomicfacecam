@@ -4,13 +4,13 @@
 using namespace AtomicFaceCam;
 
 
-void initializeUIArtifacts(const App& application)
+void initializeUIArtifacts(const AppState& application)
 {
     UI::initializeCommonControls();
     UI::registerMainWindow(application);
 }
 
-void applyDesktopDimensions(App& application)
+void applyDesktopDimensions(AppState& application)
 {
     const auto hDesktopWindow = GetDesktopWindow();
 
@@ -44,7 +44,7 @@ int APIENTRY wWinMain(
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    App application = {
+    AppState application = {
         .hInstance = hInstance,
         .nCmdShow = nCmdShow,
 

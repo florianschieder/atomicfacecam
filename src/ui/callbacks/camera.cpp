@@ -6,7 +6,7 @@ using namespace AtomicFaceCam;
 
 LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    auto application = retrieveAppInstance(hWnd, message, lParam);
+    auto appState = getAppState(hWnd, message, lParam);
     switch (message)
     {
         case WM_KEYDOWN:
@@ -21,9 +21,9 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                         hWnd,
                         HWND_TOPMOST,
                         0,
-                        application->desktopHeight - application->mainWindowHeight,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->desktopHeight - appState->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -31,10 +31,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application->desktopWidth - application->mainWindowWidth) / 2,
-                        application->desktopHeight - application->mainWindowHeight,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        (appState->desktopWidth - appState->mainWindowWidth) / 2,
+                        appState->desktopHeight - appState->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -42,10 +42,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application->desktopWidth - application->mainWindowWidth,
-                        application->desktopHeight - application->mainWindowHeight,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->desktopWidth - appState->mainWindowWidth,
+                        appState->desktopHeight - appState->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -54,9 +54,9 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                         hWnd,
                         HWND_TOPMOST,
                         0,
-                        (application->desktopHeight - application->mainWindowHeight) / 2,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        (appState->desktopHeight - appState->mainWindowHeight) / 2,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -64,10 +64,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application->desktopWidth - application->mainWindowWidth) / 2,
-                        (application->desktopHeight - application->mainWindowHeight) / 2,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        (appState->desktopWidth - appState->mainWindowWidth) / 2,
+                        (appState->desktopHeight - appState->mainWindowHeight) / 2,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -75,10 +75,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application->desktopWidth - application->mainWindowWidth,
-                        (application->desktopHeight - application->mainWindowHeight) / 2,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->desktopWidth - appState->mainWindowWidth,
+                        (appState->desktopHeight - appState->mainWindowHeight) / 2,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -88,8 +88,8 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                         HWND_TOPMOST,
                         0,
                         0,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -97,10 +97,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        (application->desktopWidth - application->mainWindowWidth) / 2,
+                        (appState->desktopWidth - appState->mainWindowWidth) / 2,
                         0,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -108,10 +108,10 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     SetWindowPos(
                         hWnd,
                         HWND_TOPMOST,
-                        application->desktopWidth - application->mainWindowWidth,
+                        appState->desktopWidth - appState->mainWindowWidth,
                         0,
-                        application->mainWindowWidth,
-                        application->mainWindowHeight,
+                        appState->mainWindowWidth,
+                        appState->mainWindowHeight,
                         SWP_SHOWWINDOW);
                     break;
 
@@ -119,14 +119,14 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.top -= application->pixelsToMove;
+                        rect.top -= appState->pixelsToMove;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application->mainWindowWidth,
-                            application->mainWindowHeight,
+                            appState->mainWindowWidth,
+                            appState->mainWindowHeight,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -135,15 +135,15 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.top += application->pixelsToMove;
+                        rect.top += appState->pixelsToMove;
 
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application->mainWindowWidth,
-                            application->mainWindowHeight,
+                            appState->mainWindowWidth,
+                            appState->mainWindowHeight,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -152,14 +152,14 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.left -= application->pixelsToMove;
+                        rect.left -= appState->pixelsToMove;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application->mainWindowWidth,
-                            application->mainWindowHeight,
+                            appState->mainWindowWidth,
+                            appState->mainWindowHeight,
                             SWP_SHOWWINDOW);
                     }
                     break;
@@ -168,21 +168,21 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                     {
                         RECT rect;
                         GetWindowRect(hWnd, &rect);
-                        rect.left += application->pixelsToMove;
+                        rect.left += appState->pixelsToMove;
                         SetWindowPos(
                             hWnd,
                             HWND_TOPMOST,
                             rect.left,
                             rect.top,
-                            application->mainWindowWidth,
-                            application->mainWindowHeight,
+                            appState->mainWindowWidth,
+                            appState->mainWindowHeight,
                             SWP_SHOWWINDOW);
                     }
                     break;
 
                 case VK_F1:
                     DialogBox(
-                        application->hInstance,
+                        appState->hInstance,
                         MAKEINTRESOURCE(IDD_HELP),
                         hWnd,
                         Callbacks::standardDialog);
@@ -190,16 +190,16 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
 
                 case VK_F2:
                     DialogBoxParamW(
-                        application->hInstance,
+                        appState->hInstance,
                         MAKEINTRESOURCE(IDD_CONFIGURATION),
                         hWnd,
                         Callbacks::configurationDialog,
-                        (LPARAM) &application);
+                        (LPARAM) &appState);
                     break;
 
                 case VK_F3:
                     DialogBox(
-                        application->hInstance,
+                        appState->hInstance,
                         MAKEINTRESOURCE(IDD_ABOUT),
                         hWnd,
                         Callbacks::standardDialog);
@@ -208,36 +208,36 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
             break;
 
         case WM_CREATE:
-            application->cameraControlHandle = capCreateCaptureWindow(
-                application->mainWindowClass,
+            appState->cameraControlHandle = capCreateCaptureWindow(
+                appState->mainWindowClass,
                 WS_VISIBLE + WS_CHILD,
                 0,
                 0,
-                application->mainWindowWidth,
-                application->mainWindowHeight,
+                appState->mainWindowWidth,
+                appState->mainWindowHeight,
                 hWnd,
                 0);
 
             SendMessage(
-                application->cameraControlHandle,
+                appState->cameraControlHandle,
                 WM_CAP_DRIVER_CONNECT,
                 0,
                 0);
 
             SendMessage(
-               application->cameraControlHandle,
+               appState->cameraControlHandle,
                 WM_CAP_SET_SCALE,
                 1,
                 0);
 
             SendMessage(
-                application->cameraControlHandle,
+                appState->cameraControlHandle,
                 WM_CAP_SET_PREVIEWRATE,
-                1000 / application->cameraFPSRate,
+                1000 / appState->cameraFPSRate,
                 0);
 
             SendMessage(
-                application->cameraControlHandle,
+                appState->cameraControlHandle,
                 WM_CAP_SET_PREVIEW,
                 1,
                 0);
@@ -247,15 +247,15 @@ LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wPara
                 HWND_TOPMOST,
                 0,
                 0,
-                application->mainWindowWidth,
-                application->mainWindowHeight,
+                appState->mainWindowWidth,
+                appState->mainWindowHeight,
                 SWP_SHOWWINDOW);
 
             break;
 
         case WM_DESTROY:
             SendMessage(
-                application->cameraControlHandle,
+                appState->cameraControlHandle,
                 WM_CAP_DRIVER_DISCONNECT,
                 0,
                 0);

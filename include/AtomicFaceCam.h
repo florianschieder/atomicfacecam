@@ -5,7 +5,7 @@
 
 namespace AtomicFaceCam
 {
-    struct App
+    struct AppState
     {
         HINSTANCE hInstance;
         int nCmdShow;
@@ -26,18 +26,18 @@ namespace AtomicFaceCam
         int pixelsToMove;
     };
 
-    int Main(App&);
+    int Main(AppState&);
 
     namespace Config {
-        void loadInto(App&);
-        void save(const App&);
+        void loadInto(AppState&);
+        void save(const AppState&);
     }
 
     namespace UI {
         void initializeCommonControls();
-        ATOM registerMainWindow(const App&);
-        void initializeMainWindow(App&);
-        App* retrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
+        ATOM registerMainWindow(const AppState&);
+        void initializeMainWindow(AppState&);
+        AppState* getAppState(HWND hWnd, UINT message, LPARAM lParam);
 
         namespace Callbacks {
             LRESULT CALLBACK mainWindow(HWND, UINT, WPARAM, LPARAM);
