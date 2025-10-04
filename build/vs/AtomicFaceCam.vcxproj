@@ -285,6 +285,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Portable|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(SolutionDir)src\ui\init.cpp" />
+    <ClCompile Include="..\..\src\ui\callbacks\aboutdlg.cpp" />
+    <ClCompile Include="..\..\src\ui\callbacks\camera.cpp" />
+    <ClCompile Include="..\..\src\ui\callbacks\configdlg.cpp" />
+    <ClCompile Include="..\..\src\ui\callbacks\helpdlg.cpp" />
+    <ClCompile Include="..\..\src\ui\callbacks\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(SolutionDir)res\AtomicFaceCam.rc" />

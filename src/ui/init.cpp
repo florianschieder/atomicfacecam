@@ -37,7 +37,8 @@ ATOM UI::MyRegisterClass(const AppWithDefaults& application)
 
 BOOL UI::InitInstance(AppWithDefaults& application)
 {
-    application.hMainWnd = CreateWindowW(
+    application.hMainWnd = CreateWindowExW(
+        0,
         application.szMainWindowClass,
         application.szTitle,
         WS_POPUP | WS_VISIBLE | WS_SYSMENU,
@@ -48,17 +49,14 @@ BOOL UI::InitInstance(AppWithDefaults& application)
         NULL,
         NULL,
         application.hInstance,
-        NULL);
+        (LPVOID) &application);
 
     if (!application.hMainWnd)
     {
       return FALSE;
     }
 
-    ShowWindow(
-        application.hMainWnd,
-        application.nCmdShow);
-
+    ShowWindow(application.hMainWnd, application.nCmdShow);
     UpdateWindow(application.hMainWnd);
 
     return TRUE;

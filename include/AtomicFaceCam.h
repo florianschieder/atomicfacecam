@@ -5,8 +5,6 @@
 
 namespace AtomicFaceCam
 {
-    int Main();
-
     struct AppWithDefaults
     {
         HINSTANCE hInstance = NULL;
@@ -31,6 +29,8 @@ namespace AtomicFaceCam
         int arrowStep = 10;
     };
 
+    int Main(AppWithDefaults&);
+
     namespace Config {
         void Load(const AppWithDefaults&);
         void Save(const AppWithDefaults&);
@@ -40,6 +40,7 @@ namespace AtomicFaceCam
         void InitializeCommonControls();
         ATOM MyRegisterClass(const AppWithDefaults&);
         BOOL InitInstance(AppWithDefaults&);
+        AppWithDefaults* RetrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
 
         namespace Callbacks {
             LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);

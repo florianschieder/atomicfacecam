@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\core">
+      <UniqueIdentifier>{bfd24f82-1ca5-41c7-bd4f-13bb092046b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\ui">
+      <UniqueIdentifier>{b2b7b11a-1c5e-45dd-bd09-da0937f051aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\ui\callbacks">
+      <UniqueIdentifier>{c59dcd33-37f3-479b-afc4-6594933e3b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(SolutionDir)include\AtomicFaceCam.h">
@@ -26,17 +35,32 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(SolutionDir)src\core\config.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="$(SolutionDir)src\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="$(SolutionDir)src\pch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="$(SolutionDir)src\core\config.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
     <ClCompile Include="$(SolutionDir)src\ui\init.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Quelldateien\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui\callbacks\helpdlg.cpp">
+      <Filter>Quelldateien\ui\callbacks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui\callbacks\aboutdlg.cpp">
+      <Filter>Quelldateien\ui\callbacks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui\callbacks\camera.cpp">
+      <Filter>Quelldateien\ui\callbacks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui\callbacks\configdlg.cpp">
+      <Filter>Quelldateien\ui\callbacks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ui\callbacks\utils.cpp">
+      <Filter>Quelldateien\ui\callbacks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
