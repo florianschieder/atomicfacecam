@@ -3,6 +3,8 @@
 
 #include "../res/targetver.h"
 
+#include <map>
+
 #include <Windows.h>
 #include <Vfw.h>
 #include <CommCtrl.h>
