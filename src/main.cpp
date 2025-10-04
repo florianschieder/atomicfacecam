@@ -6,8 +6,8 @@ using namespace AtomicFaceCam;
 
 void initializeUIArtifacts(const App& application)
 {
-    UI::InitializeCommonControls();
-    UI::RegisterMainWindow(application);
+    UI::initializeCommonControls();
+    UI::registerMainWindow(application);
 }
 
 void applyDesktopDimensions(App& application)
@@ -57,7 +57,7 @@ int APIENTRY wWinMain(
     applyDesktopDimensions(application);
     Config::loadInto(application);
 
-    UI::InitializeMainWindow(application);
+    UI::initializeMainWindow(application);
 
     return enterMainLoop();
 }

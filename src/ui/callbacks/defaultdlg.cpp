@@ -3,7 +3,7 @@
 
 using namespace AtomicFaceCam;
 
-INT_PTR CALLBACK UI::Callbacks::StandardDialog(
+INT_PTR CALLBACK UI::Callbacks::standardDialog(
     HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);

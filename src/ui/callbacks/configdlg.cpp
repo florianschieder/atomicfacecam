@@ -4,9 +4,9 @@
 using namespace AtomicFaceCam;
 
 
-INT_PTR CALLBACK UI::Callbacks::ConfigurationDialog(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK UI::Callbacks::configurationDialog(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam)
 {
-    auto application = RetrieveAppInstance(hwnd, Message, lParam);
+    auto application = retrieveAppInstance(hwnd, Message, lParam);
     switch (Message)
     {
     case WM_INITDIALOG:
@@ -53,7 +53,7 @@ INT_PTR CALLBACK UI::Callbacks::ConfigurationDialog(HWND hwnd, UINT Message, WPA
             application->pixelsToMove = GetDlgItemInt(hwnd, IDC_ARROWSTEP, NULL, TRUE);
             application->cameraFPSRate = GetDlgItemInt(hwnd, IDC_FPS, NULL, TRUE);
 
-            Config::Save(*application);
+            Config::save(*application);
 
             EndDialog(hwnd, IDOK);
             break;

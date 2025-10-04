@@ -4,9 +4,9 @@
 using namespace AtomicFaceCam;
 
 
-LRESULT CALLBACK UI::Callbacks::MainWindow(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK UI::Callbacks::mainWindow(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    auto application = RetrieveAppInstance(hWnd, message, lParam);
+    auto application = retrieveAppInstance(hWnd, message, lParam);
     switch (message)
     {
         case WM_KEYDOWN:
@@ -185,7 +185,7 @@ LRESULT CALLBACK UI::Callbacks::MainWindow(HWND hWnd, UINT message, WPARAM wPara
                         application->hInstance,
                         MAKEINTRESOURCE(IDD_HELP),
                         hWnd,
-                        Callbacks::StandardDialog);
+                        Callbacks::standardDialog);
                     break;
 
                 case VK_F2:
@@ -193,7 +193,7 @@ LRESULT CALLBACK UI::Callbacks::MainWindow(HWND hWnd, UINT message, WPARAM wPara
                         application->hInstance,
                         MAKEINTRESOURCE(IDD_CONFIGURATION),
                         hWnd,
-                        Callbacks::ConfigurationDialog,
+                        Callbacks::configurationDialog,
                         (LPARAM) &application);
                     break;
 
@@ -202,7 +202,7 @@ LRESULT CALLBACK UI::Callbacks::MainWindow(HWND hWnd, UINT message, WPARAM wPara
                         application->hInstance,
                         MAKEINTRESOURCE(IDD_ABOUT),
                         hWnd,
-                        Callbacks::StandardDialog);
+                        Callbacks::standardDialog);
                     break;
             }
             break;

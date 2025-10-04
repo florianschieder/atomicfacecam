@@ -30,19 +30,19 @@ namespace AtomicFaceCam
 
     namespace Config {
         void loadInto(App&);
-        void Save(const App&);
+        void save(const App&);
     }
 
     namespace UI {
-        void InitializeCommonControls();
-        ATOM RegisterMainWindow(const App&);
-        void InitializeMainWindow(App&);
-        App* RetrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
+        void initializeCommonControls();
+        ATOM registerMainWindow(const App&);
+        void initializeMainWindow(App&);
+        App* retrieveAppInstance(HWND hWnd, UINT message, LPARAM lParam);
 
         namespace Callbacks {
-            LRESULT CALLBACK MainWindow(HWND, UINT, WPARAM, LPARAM);
-            INT_PTR CALLBACK StandardDialog(HWND, UINT, WPARAM, LPARAM);
-            INT_PTR CALLBACK ConfigurationDialog(HWND, UINT, WPARAM, LPARAM);
+            LRESULT CALLBACK mainWindow(HWND, UINT, WPARAM, LPARAM);
+            INT_PTR CALLBACK standardDialog(HWND, UINT, WPARAM, LPARAM);
+            INT_PTR CALLBACK configurationDialog(HWND, UINT, WPARAM, LPARAM);
         }
     }
 }

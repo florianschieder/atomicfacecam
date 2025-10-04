@@ -45,7 +45,7 @@ void Config::loadInto(App& application)
         &bufferSize);
 }
 
-void Config::Save(const App& application)
+void Config::save(const App& application)
 {
     DWORD bufferSize = 4;
 
