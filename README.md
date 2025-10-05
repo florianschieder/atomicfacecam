@@ -8,6 +8,5 @@ It is a yet stable, standalone application and should compatible with most Windo
 ## Roadmap
 
 - Automate build process
-- Make cross platform
 - Add-ons: custom frames, effects etc.
 - Features: hide into tray, reposition the overlay manually by mouse dragging, ...
