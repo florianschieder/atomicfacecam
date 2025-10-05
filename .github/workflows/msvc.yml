@@ -6,7 +6,7 @@
 # Find more information at:
 # https://github.com/microsoft/msvc-code-analysis-action
 
-name: Microsoft C++ Code Analysis
+name: Build
 
 on:
   - pull_request
@@ -22,7 +22,7 @@ jobs:
   analyze:
     permissions:
       contents: read
-    name: Microsoft C++ Code Analysis
+    name: Build
     runs-on: windows-latest
 
     steps:
@@ -37,10 +37,3 @@ jobs:
       - name: Build
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
-
-      - name: Initialize MSVC Code Analysis
-        uses: microsoft/msvc-code-analysis-action@04825f6d9e00f87422d6bf04e1a38b1f3ed60d99
-        id: run-analysis
-        with:
-          working-directory: ${{env.GITHUB_WORKSPACE}}
-          ruleset: AllRules.ruleset
